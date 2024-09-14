@@ -20,13 +20,13 @@ export async function parseLogFile(req, res) {
   let matches = {};
   let currentMatch = null;
   let playerNames = {};
-  let gameNumber = 1; // Game counter to track game number
+  let gameNumber = 1; 
 
   const playerInfoRegex = /ClientUserinfoChanged:\s*(\d+)\s+n\\([^\\]+)/;
   const killRegex = /^\s*[\d:]+\s+Kill:\s+(\d+)\s+(\d+)\s+\d+:\s*(?:<([^>]+)>\s+|(.+?)\s+)killed\s+(.+?)\s+by\s+(.+)$/;
 
   logLines.forEach(line => {
-    // Start of a match
+
     if (line.includes('InitGame')) {
       currentMatch = {
         totalKills: 0,
@@ -35,15 +35,13 @@ export async function parseLogFile(req, res) {
         worldKills: 0,
         killsByMeans: {}
       };
-      playerNames = {}; // Reset playerNames for each new match
+      playerNames = {}; 
 
-    // End of a match
     } else if (line.includes('ShutdownGame')) {
       matches[`game_${gameNumber}`] = currentMatch;
       currentMatch = null;
-      gameNumber += 1; // Increment the game number for the next match
+      gameNumber += 1; 
 
-    // Track player connections and names
     } else if (line.includes('ClientUserinfoChanged')) {
       const match = line.match(playerInfoRegex);
       if (match) {
@@ -59,7 +57,6 @@ export async function parseLogFile(req, res) {
         }
       }
 
-    // Track kill events
     } else if (line.includes('Kill')) {
       const match = line.match(killRegex);
       
@@ -88,7 +85,6 @@ export async function parseLogFile(req, res) {
           }
         }
 
-        // Track kills by means of death
         if (!currentMatch.killsByMeans[meansOfDeath]) {
           currentMatch.killsByMeans[meansOfDeath] = 0;
         }
