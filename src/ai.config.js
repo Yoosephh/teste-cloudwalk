@@ -1,21 +1,29 @@
-import { Configuration, OpenAIApi } from 'openai';
+import OpenAI from 'openai';
+import 'dotenv/config';
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY, // Store your API key in an environment variable
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
 });
-
-const openai = new OpenAIApi(configuration);
 
 export async function askLLM(query, matchData) {
   try {
-    const response = await openai.createCompletion({
-      model: 'gpt-3.5-turbo',
-      prompt: `Using the following match data:\n${JSON.stringify(matchData)}\nAnswer the following question:\n"${query}"`,
-      max_tokens: 150,
+    const response = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo',  
+      messages: [
+        {
+          role: 'system',
+          content: `You are an expert game analyst. You are provided with the following match data: ${JSON.stringify(matchData)}. Answer any user queries based on this data.`,
+        },
+        {
+          role: 'user',
+          content: query,
+        },
+      ],
+      max_tokens: 200,
       temperature: 0.7,
     });
 
-    return response.data.choices[0].text.trim();
+    return response.choices[0].message.content.trim();
   } catch (error) {
     console.error('Error querying GPT:', error);
     return 'Error processing the query.';

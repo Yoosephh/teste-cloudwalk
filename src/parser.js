@@ -86,5 +86,5 @@ export async function parseLogFile(req, res) {
     }
   });
 
-  res.json(matches);
+  return matches;
 }
