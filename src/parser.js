@@ -44,6 +44,7 @@ export async function parseLogFile(req, res) {
 
     } else if (line.includes('ClientUserinfoChanged')) {
       const match = line.match(playerInfoRegex);
+
       if (match) {
         const playerId = match[1];
         const playerName = match[2];
@@ -69,20 +70,12 @@ export async function parseLogFile(req, res) {
 
         if (killerId == 1022) {
           currentMatch.worldKills += 1;
-          if (killedName && currentMatch.kills[killedName] !== undefined) {
-            currentMatch.kills[killedName] -= 1;
-          }
+          currentMatch.kills[killedName] -= 1;
+          
 
         } else {
           currentMatch.totalKills += 1;
-
-          if (killerName && currentMatch.kills[killerName] !== undefined) {
-            currentMatch.kills[killerName] += 1;
-          }
-
-          if (killedName && currentMatch.kills[killedName] === undefined) {
-            currentMatch.kills[killedName] = 0;
-          }
+          currentMatch.kills[killerName] += 1;
         }
 
         if (!currentMatch.killsByMeans[meansOfDeath]) {
