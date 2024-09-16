@@ -20,9 +20,11 @@ app.use(cors());
 app.use(express.json());
 app.use(fileRouter);
 
-app.listen(port, () => {
-  console.log(`Servidor rodando na porta ${port}`);
-});
+if(require.main === module) {
+  app.listen(port, () => {
+    console.log(`Servidor rodando na porta ${port}`);
+  });
+}
 
 export default app;
 

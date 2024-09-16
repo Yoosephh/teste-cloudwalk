@@ -4,14 +4,7 @@ import fs from 'fs/promises';
 jest.mock('fs/promises');
 
 describe('readLogFile', () => {
-  let mockRes;
-  beforeEach(() => {
-    mockRes = {
-      status: jest.fn().mockReturnThis(),
-      send: jest.fn()
-    }
-  })
-  
+
   it('should return log lines when log file is found', async () => {
     const mockLogData = `
       0:00 InitGame: \\sv_hostname\\Code Miner Server\\timelimit\\15\\mapname\\q3dm17

@@ -1,6 +1,16 @@
 import request from 'supertest';
 import app from '../src/app.js'
 
+let server;
+
+beforeAll((done) => {
+  server = app.listen(done);
+});
+
+afterAll((done) => {
+  server.close(done);
+});
+
 describe('App Routes', () => {
   it('should respond to /health with a greeting message', async () => {
     const res = await request(app).get('/health');
