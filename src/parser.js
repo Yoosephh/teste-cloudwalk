@@ -1,7 +1,14 @@
 import fs from 'fs/promises';
 import path from 'path';
 
-export default async function readLogFile() {
+export default async function parserControler(req, res) {
+
+  const matchData = await parseLogFile();
+
+  res.json(matchData);
+}
+
+export async function readLogFile() {
   const logFilePath = path.join(process.cwd(), './Log teste.log');
   try {
     const data = await fs.readFile(logFilePath, 'utf-8');
@@ -28,6 +35,11 @@ export async function parseLogFile(req, res) {
   logLines.forEach(line => {
 
     if (line.includes('InitGame')) {
+      if (currentMatch) {
+        matches[`game_${gameNumber}`] = currentMatch;
+        gameNumber += 1;
+      }
+
       currentMatch = {
         totalKills: 0,
         players: [],

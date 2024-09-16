@@ -1,5 +1,6 @@
 import OpenAI from 'openai';
 import 'dotenv/config';
+import { parseLogFile } from './parser.js';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -28,4 +29,12 @@ export async function askLLM(query, matchData) {
     console.error('Error querying GPT:', error);
     return 'Error processing the query.';
   }
+}
+
+export default async function queryLLM(req, res) {
+  const {question} = req.body;
+  const matchData = await parseLogFile();
+  const answer = await askLLM(question, matchData);
+
+  res.send(answer).status(200)
 }
