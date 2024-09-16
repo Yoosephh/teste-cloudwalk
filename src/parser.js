@@ -10,9 +10,14 @@ export default async function parserControler(req, res) {
 
 export async function readLogFile() {
   const logFilePath = path.join(process.cwd(), './Log teste.log');
+
   try {
     const data = await fs.readFile(logFilePath, 'utf-8');
-    const lines = data.replace(/\r/g, '').split('\n');
+    const lines = data.replace(/\r/g, '')
+      .split('\n')
+      .map(line => line.trim())
+      .filter(line => line.length > 0);
+      
     return lines;
   } catch (error) {
     console.error('Error reading log file:', error);
