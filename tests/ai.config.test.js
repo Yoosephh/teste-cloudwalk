@@ -9,7 +9,8 @@ jest.mock('openai', () => ({
     },
   },
 }));
-jest.mock('./parser.js'); // Mock the parser
+
+jest.mock('../src/parser.js');
 
 describe('askLLM', () => {
   it('should return a valid response from OpenAI', async () => {

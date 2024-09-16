@@ -44,12 +44,12 @@ describe('parseLogFile', () => {
 
   it('should handle multiple InitGame without ShutdownGame', async () => {
     const mockLogLines = [
-      'InitGame',
-      'ClientUserinfoChanged: 2 n\\Player1',
-      'Kill: 1022 2 22: <world> killed Player1 by MOD_FALLING',
-      'InitGame', 
-      'ClientUserinfoChanged: 3 n\\Player2',
-      'Kill: 1022 3 22: <world> killed Player2 by MOD_FALLING',
+      '20:37 InitGame: ',
+      '21:15 ClientUserinfoChanged: 2 n/Player1',
+      '21:42 Kill: 1022 2 22: <world> killed Player1 by MOD_FALLING',
+      '20:37 InitGame: ', 
+      '21:51 ClientUserinfoChanged: 3 n/Player2',
+      '25:05 Kill: 1022 3 22: <world> killed Player2 by MOD_TRIGGER_HURT',
       'ShutdownGame',
     ];
 
@@ -69,7 +69,7 @@ describe('parseLogFile', () => {
         players: ['Player2'],
         kills: { Player2: -1 },
         worldKills: 1,
-        killsByMeans: { MOD_FALLING: 1 },
+        killsByMeans: { MOD_TRIGGER_HURT: 1 },
       },
     });
   });

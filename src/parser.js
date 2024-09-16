@@ -84,8 +84,11 @@ export async function parseLogFile(req, res) {
           currentMatch.worldKills += 1;
           currentMatch.kills[killedName] -= 1;
           
-
-        } else {
+        } else if (killerId == killedId) {
+          currentMatch.kills[killedName] -= 1;
+        } 
+        
+        else {
           currentMatch.totalKills += 1;
           currentMatch.kills[killerName] += 1;
         }
